@@ -1,14 +1,19 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <tab-control class="top-tab-control"
+                 :titles="['流行','新型','精选']"
+                 @tabClick="tabClick"
+                 ref="tabControl1" v-show="isTabFix" />
     <scroll class="content" ref="scroll"
             :probe-type="3" :pull-up-load="true"
             @scroll="contentScroll" @pullingUp="loadMore">
-      <home-swiper :banners="banners" />
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
       <recommend-view :recommends="recommends" />
       <feature-view />
       <tab-control class="tab-control"
-                   :titles="['流行','新型','精选']" @tabClick="tabClick"/>
+                   :titles="['流行','新型','精选']"
+                   @tabClick="tabClick" ref="tabControl2"/>
       <good-list :goods="showGoods"/>
     </scroll>
     <back-top @click.native="backClick" v-show="isShow"/>
@@ -28,6 +33,7 @@
   import BackTop from "components/content/backTop/BackTop";
 
   import {getHomeMultidata , getHomeGoods } from 'network/home'
+  import {debounce} from 'common/utils'
 
 
   export default {
@@ -54,7 +60,10 @@
           'sell': {page: 0, list: []}
         },
         currentType: 'pop',
-        isShow: false
+        isShow: false,
+        tabOffsetTop: 0,
+        isTabFix: false,
+        saveY: 0
       }
     },
     created() {
@@ -69,29 +78,17 @@
     },
     mounted() {
       //监听item中图片加载完成
-      // this.$bus.$on('itemImageLoad', () => {
-      //   this.$refs.scroll && this.$refs.scroll.refresh()
-      //   console.log('---')
-      // })
-      const refresh = this.debounce(this.$refs.scroll.refresh , 200)
+      const refresh = debounce(this.$refs.scroll.refresh , 500)
       this.$bus.$on('itemImageLoad' , () => {
         refresh()
       })
+
     },
     methods: {
       /*
       * 事件监听
       *
       * */
-      debounce(func , delay) {
-        let timer = null
-        return function (...args) {
-          if (timer) clearTimeout(timer)
-          timer = setTimeout(() => {
-            func.apply(this, args)
-          }, delay)
-        }
-      },
 
       tabClick(index) {
         switch(index) {
@@ -105,6 +102,8 @@
             this.currentType = 'sell'
             break
         }
+        this.$refs.tabControl1.currentIndex = index;
+        this.$refs.tabControl2.currentIndex = index;
       },
       //返回顶部
       backClick() {
@@ -112,7 +111,11 @@
       },
       //小图标的消失与存在
       contentScroll(position) {
+        //判断back-top是否显示
         this.isShow = -(position.y) > 1000
+
+        //判断tab-control是否吸顶显示
+        this.isTabFix = -(position.y) > this.tabOffsetTop
       },
       //上拉加载更多
       loadMore() {
@@ -120,6 +123,11 @@
         // console.log('上拉加载更多')
       },
 
+      //计算距离顶部的偏移量，固定tab-control
+      swiperImageLoad() {
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
+        console.log(this.tabOffsetTop)
+      },
 
       /*
        *
@@ -145,6 +153,13 @@
     computed: {
       showGoods() {
         return this.goods[this.currentType].list
+      },
+      activated() {
+        this.$refs.scroll.scrollTo(0, this.saveY, 0)
+        this.$refs.scroll.refresh()
+      } ,
+      deactivated() {
+        this.saveY = this.$refs.scroll.getScrollY()
       }
     }
   }
@@ -155,6 +170,7 @@
     /*padding-top: 44px;*/
     position: relative;
     height: 100vh;
+    /*height: calc(100% - 49px);*/
 
   }
   .home-nav {
@@ -168,9 +184,15 @@
     top: 0;
     z-index: 9;
   }
-  .tab-control {
-    position: sticky;
-    top:  44px;
+  /*.tab-control {*/
+  /*  z-index: 9;*/
+  /*}*/
+
+  .top-tab-control {
+    position: fixed;
+    top: 43px;
+    left: 0;
+    right: 0;
     z-index: 9;
   }
 
