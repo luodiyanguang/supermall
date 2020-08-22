@@ -78,7 +78,7 @@
     },
     mounted() {
       //监听item中图片加载完成
-      const refresh = debounce(this.$refs.scroll.refresh , 500)
+      const refresh = debounce(this.$refs.scroll.refresh , 200)
       this.$bus.$on('itemImageLoad' , () => {
         refresh()
       })

@@ -29,6 +29,7 @@
     mounted: function () {
       this.scroll = new BScroll(this.$refs.wrapper, {
         click: true,
+        tap: true,
         probeType: this.probeType,
         pullUpLoad: this.pullUpLoad
       })
