@@ -25,15 +25,16 @@
   import HomeSwiper from "./childComps/HomeSwiper";
   import RecommendView from "./childComps/RecommendView";
   import FeatureView from "./childComps/FeatureView";
-  import GoodList from "../../components/content/goods/GoodList";
+  import GoodList from "components/content/goods/GoodList";
 
 
   import TabControl from "components/content/tabControl/TabControl";
   import Scroll from "components/common/scroll/Scroll";
-  import BackTop from "components/content/backTop/BackTop";
+  // import BackTop from "components/content/backTop/BackTop";
 
   import {getHomeMultidata , getHomeGoods } from 'network/home'
   import {debounce} from 'common/utils'
+  import {itemListerMixin, backTopMixin} from "common/mixin";
 
 
   export default {
@@ -46,9 +47,9 @@
       FeatureView,
       TabControl,
       GoodList,
-      Scroll,
-      BackTop
+      Scroll
     },
+    mixins: [itemListerMixin, backTopMixin],
     data() {
       return {
         // result: null
@@ -77,12 +78,21 @@
 
     },
     mounted() {
-      //监听item中图片加载完成
-      const refresh = debounce(this.$refs.scroll.refresh , 200)
-      this.$bus.$on('itemImageLoad' , () => {
-        refresh()
-      })
+      // 监听item中图片加载完成
+      // const newRefresh = debounce(this.$refs.scroll.refresh , 200)
+      // this.$bus.$on('itemImageLoad' , () => {
+      //   newRefresh()
+      // })
 
+    },
+    activated() {
+      this.$refs.scroll.scrollTo(0, this.saveY)
+      this.$refs.scroll.refresh()
+    } ,
+    deactivated() {
+      this.saveY = this.$refs.scroll.getScrollY()
+
+      this.$bus.$off('itemImgLoad' , this.itemImgListener)
     },
     methods: {
       /*
@@ -112,7 +122,7 @@
       //小图标的消失与存在
       contentScroll(position) {
         //判断back-top是否显示
-        this.isShow = -(position.y) > 1000
+        this.listenShowBackTop(position)
 
         //判断tab-control是否吸顶显示
         this.isTabFix = -(position.y) > this.tabOffsetTop
@@ -154,13 +164,15 @@
       showGoods() {
         return this.goods[this.currentType].list
       },
-      activated() {
-        this.$refs.scroll.scrollTo(0, this.saveY, 0)
-        this.$refs.scroll.refresh()
-      } ,
-      deactivated() {
-        this.saveY = this.$refs.scroll.getScrollY()
-      }
+      // activated() {
+      //   this.$refs.scroll.scrollTo(0, this.saveY, 0)
+      //   this.$refs.scroll.refresh()
+      // } ,
+      // deactivated() {
+      //   this.saveY = -this.$refs.scroll.getScrollY()
+      //
+      //   this.$bus.$off('itemImgLoad' , this.itemImgListener)
+      // }
     }
   }
 </script>

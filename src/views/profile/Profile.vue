@@ -1,10 +1,15 @@
 <template>
-  <h3>我的</h3>
+  <div>
+    <h3>我的</h3>
+
+  </div>
 </template>
 
 <script>
   export default {
-    name: "Profile"
+    name: "Profile",
+    components: {
+    }
   }
 </script>
 
