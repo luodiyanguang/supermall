@@ -4,9 +4,9 @@
     <scroll class="content" ref="scroll"
             :probeType="3" @scroll="contentScroll">
 
-      <ul>
-        <li v-for="item in $store.state.cartList">{{item}}</li>
-      </ul>
+<!--      <ul>-->
+<!--        <li v-for="item in $store.state.cartList">{{item}}</li>-->
+<!--      </ul>-->
       <detail-swiper :top-images="topImages" />
       <detail-base-info :goods-info="goodsInfo" />
       <detail-shop-info :shop-info="shopInfo" />
@@ -84,13 +84,13 @@
      //通过iid获得商品信息
       getDetail(this.iid).then(res => {
         //获取顶部轮播图信息
-        console.log(res)
+        // console.log(res)
         const data = res.result;
         this.topImages = data.itemInfo.topImages
 
         //获取商品信息
         this.goodsInfo = new Goods(data.itemInfo, data.columns, data.shopInfo.services)
-        console.log(this.goodsInfo)
+        // console.log(this.goodsInfo)
 
         //获取店铺信息
         this.shopInfo = data.shopInfo
@@ -120,7 +120,7 @@
         this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
         this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
         this.themeTopYs.push(Number.MAX_VALUE)
-        console.log(this.themeTopYs)
+        // console.log(this.themeTopYs)
       }, 100)
     },
     mounted() {

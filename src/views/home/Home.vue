@@ -136,7 +136,7 @@
       //计算距离顶部的偏移量，固定tab-control
       swiperImageLoad() {
         this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
-        console.log(this.tabOffsetTop)
+        // console.log(this.tabOffsetTop)
       },
 
       /*
