@@ -30,7 +30,7 @@
         this.$bus.$emit('itemImageLoad')
       },
       itemClick() {
-        console.log('已经点击了一次')
+        // console.log('已经点击了一次')
         this.$router.push('/detail/' + this.goodsItem.iid)
       }
     }
