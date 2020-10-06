@@ -2,7 +2,7 @@
   <div class="detailNavbar">
     <nav-bar>
       <div slot="left" class="goback" @click="gobackClick">
-        <img src="~assets/img/common/back.svg" />
+        <img src="~assets/img/common/left.png" />
       </div>
       <div slot="center" class="title">
         <div v-for="(item, index) in titles"

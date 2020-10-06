@@ -45,13 +45,13 @@
     data: function () {
       return {
         orderList: [
-          {icon: '#order', iconColor: '#ff8198', info: '我的消息'},
-          {icon: '#point', iconColor: '#fc7b53', info: '积分商城'},
-          {icon: '#vip', iconColor: '#ffc636', info: '会员卡'},
+          {src: '~assets/img/profile/message.png' , info: '我的消息'},
+          {src: '~assets/img/profile/shop.png' , info: '积分商城'},
+          {src: '~assets/img/profile/vip.png' , info: '会员卡'},
         ],
         serviceList: [
-          {icon: '#service', iconColor: '#ff8198', info: '我的购物车'},
-          {icon: '#download', iconColor: '#ff8198', info: '下载购物APP'},
+          {src: '~assets/img/profile/cart.png' , info: '我的购物车'},
+          {src: '~assets/img/profile/app.png' , info: '下载购物APP'},
         ]
       }
     },
@@ -81,11 +81,12 @@
     background-color: #fff;
     margin-right: 1px;
     text-align: center;
+    flex: 1;
   }
 
-  .account-item:last-of-type {
-    margin-right: 0;
-  }
+  /*.account-item:last-of-type {*/
+  /*  margin-right: 0;*/
+  /*}*/
 
   .account-item {
     color: #666;
