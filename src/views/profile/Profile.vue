@@ -79,8 +79,9 @@
   .account-item {
     width: 100%;
     background-color: #fff;
-    margin-right: 1px;
-    text-align: center;
+    /*margin-right: 1px;*/
+    /*margin-left: 1px;*/
+    /*text-align: center;*/
     flex: 1;
   }
 
@@ -100,8 +101,13 @@
     color: #ff5f3e;
   }
 
+  .number {
+    text-align: center;
+  }
+
   .account-info {
     margin-top: 6px;
+    text-align: center;
   }
 
   .order-list, .service-list {
